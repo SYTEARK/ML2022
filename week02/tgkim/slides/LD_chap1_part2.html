@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Learning from Data - Chapter 1</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="socialst.css">
+    <link rel="stylesheet" type="text/css" href="additional.css">
+  </head>
+  <body>
+    <textarea id="source">
+
+
+layout: true
+<div class="my-header">
+  <p class="align_left"><img src="images/yonsei_logo.png" style="height: 30px;"/></p>
+  <p class="align_right"><b>Chapter 1 - The Learning Problem (Part 2)</b></p>
+</div>
+<div class="my-footer">
+  <p class="align_right"><b>2022.01.16 @ SYTEARK</b></p>
+  <p class="align_left"><b>Tae Geun Kim</b></p>
+</div>
+
+---
+
+class: center, middle
+
+# The Learning Problem
+
+<h4 style="color:brown">Part 2 of Chapter 1</h4>
+
+<h3 style="color: darkblue">Tae Geun Kim</h3>
+
+---
+
+## Table of Contents
+
+--
+
+* Probability to the Rescue
+
+--
+
+* Feasibility of Learning
+
+--
+
+* Error measures
+
+--
+
+* Noisy Targets
+
+---
+
+class: center, middle
+
+# Probability to the Rescue
+
+---
+
+### Revisit the bin model
+
+.center[
+<div id="boxshadow" style="width:80%;margin:0 auto;">
+  <img src="../../../week01/tgkim/images/bin.png" alt="bin" style="width:100%">
+  <figcaption style="text-align:center";><b>Fig.1</b> Revisit the bin</figcaption>
+</div>
+]
+
+--
+
+**Q. How to estimate $\mu$ with $\nu$?**
+
+---
+
+### Hoeffding Inequality
+
+To quantify the relationship between $\nu$ and $\mu$, there is a simple bound called *Hoeffding Inequality*.
+
+$$
+\mathbb{P}[|\nu - \mu| > \epsilon] < 2e^{-2\epsilon^2 N} \quad \text{for any}~\epsilon > 0
+$$
+
+--
+
+&nbsp;
+
+* $\nu$ is random, but $\mu$ is not random.
+
+--
+
+* The sample size $N$ grows, it becomes exponentially unlikely that $\nu$ will deviate from $\mu$ by more than our *tolerance* $\epsilon$.
+
+--
+
+* Although $\mathbb{P}[|\nu-\mu| < \epsilon]$ depends on $\mu$, we are able to bound the probability by $2e^{-2\epsilon^2 N}$ which does not depend on $\mu$.
+
+--
+
+* Only the sample size $N$ affects the bound, not the size of the bin.
+
+---
+
+### Hoeffding Inequality
+
+.center[
+<div class="animated-border-quote" style="width:100%">
+  <blockquote style="width:90%">
+    <p><b>Exercise 1.9</b></p>
+    <p style="text-align:left">
+      If $\mu=0.9$, use the Hoeffding Inequality to bound the probability that a sample of 10 marbles will have $\nu \leq 0.1$
+      and compare the answer to the <i>Exercise 1.8</i>.
+    </p>
+  </blockquote>
+</div>
+]
+
+--
+
+$$
+\begin{aligned}
+\mathbb{P}(\nu \leq 0.1) &= \mathbf{P}(0.9-\nu \geq 0.8)\\\\
+&= \mathbf{P}(|\nu - 0.9| \geq 0.8) \\\\
+&\leq 2e^{-2\cdot 0.8^2 \cdot 10 } \simeq 5.5215 \times 10^{-6}
+\end{aligned}
+$$
+
+--
+
+This bound is compatible with *Exercise 1.8*.
+
+$$
+\mathbb{P}(\nu \leq 0.1) = 9.1 \times 10^{-9}
+$$
+
+---
+
+### Confidence Interval
+
+We can use Hoeffding inequality to determine how many samples are needed to set confidence intervals.
+
+--
+
+$$
+\begin{aligned}
+&\mathbb{P}(|\nu - \mu| \geq \epsilon) \leq 2e^{-2\epsilon^2 N} \\\\
+\Rightarrow~&\mathbb{P}(\nu \notin [\mu - \epsilon, \mu + \epsilon]) \leq 2e^{-2\epsilon^2 N}
+\end{aligned}
+$$
+
+--
+
+Let denote the level of significance as $\alpha$ then:
+
+$$
+\alpha = \mathbb{P}(\nu \notin [\mu - \epsilon, \mu + \epsilon]) \leq 2e^{-2\epsilon^2 N} \\\\
+$$
+
+--
+
+Solve for $N$:
+
+$$
+N \geq \frac{\log 2/\alpha}{2\epsilon^2}
+$$
+
+---
+
+### In-and-out
+
+**Q. How does the bin model relate to the learning problem?**
+
+--
+
+* Take any single hypothesis $h\in\mathcal{H}$ and compare it to $f$ on each point $\mathbf{x} \in \mathcal{X}$.
+
+--
+
+* If $h(\mathbf{x}) = f(\mathbf{x})$, color the point $\mathbf{x}$ green.
+
+* If $h(\mathbf{x}) \neq f(\mathbf{x})$, color the point $\mathbf{x}$ red.
+
+--
+
+* The color that each point gets is not known to us, since $f$ is unknown.
+
+--
+
+* However, if we pick $\mathbf{x}$ at random according to some probability distribution $\mathbf{P}$ over the input space $\mathcal{X}$,
+we know that $\mathbf{x}$ will red with some probability, call it $\mu$, and green with probability $1-\mu$.
+
+--
+
+* Hmm..
+
+---
+
+### Error Counting
+
+Estimate the error probability can be denoted as follows:
+
+$$
+L = \mathbf{P}\left\\{ h(X) \neq Y \right\\}
+$$
+
+* $g$ is a hypothesis.
+
+* It is important to find error estimation methods that work well without any condition on the distribution of $(X, Y)$.
+
+--
+
+Suppose that a testing sequence
+
+$$
+T\_N = \left\\{ (X\_{i},\,Y\_i)\right\\}\_{i=1}^N
+$$
+
+which is a sequence of i.i.d (independent and identically distributed) pairs that are independent of $(X,\,Y)$ and *the bin*,
+and that are distributed as $(X,\,Y)$.
+
+---
+
+### Error Counting
+
+An obvious way to estimate $L$ is to count the number of errors that $h$ commits on $T_N$.
+
+--
+
+* The *error-counting estimator* $\hat{L}_{N}$ is defined by the relative frequency
+
+$$
+\hat{L}\_N = \frac{1}{N} \sum\_{j=1}^N \mathbf{I}\_{\\{h(X\_{j})\neq Y\_{j}\\}}
+$$
+
+--
+
+* The estimator clearly *unbiased* in the sense that
+
+$$
+\mathbf{E}\hat{L}\_N = L
+$$
+
+--
+
+* The distribution of $\mathbf{I}\_{\\{h(X\_{j})\neq Y\_{j}\\}}$ is a bernoulli distribution. (0 or 1)
+
+* The distribution of $N \hat{L}_N$ is a binomial distribution with parameters $N$ and $L$.
+
+$$
+N \hat{L}\_N \sim \text{Bin}(N, L)
+$$
+
+---
+
+### Revisit Hoeffding Inequality
+
+.center[
+<div class="animated-border-quote" style="width:100%">
+  <blockquote style="width:90%">
+    <p><b>Theorem</b> (Hoeffding (1963))</p>
+    <p style="text-align:left">Let $X_1,\,\cdots,\,X_n$ be independent bounded random variables such that $X_i$ falls in the interval
+      $[a_i,\,b_i]$ with probability one. Denote their sum by $S_n = \sum_{i=1}^n X_i$. Then for any $\epsilon > 0$ we have
+    </p>
+    <p>$$\mathbf{P}\{S_n - \mathbf{E}S_n \geq \epsilon\} \leq e^{-2\epsilon^2 / \sum_{i=1}^n (b_i - a_i)^2}$$</p>
+    <p style="text-align: left;">and</p>
+    <p>$$\mathbf{P}\{S_n - \mathbf{E}S_n \leq -\epsilon\} \leq e^{-2\epsilon^2 / \sum_{i=1}^n (b_i - a_i)^2}$$</p>
+  </blockquote>
+</div>
+]
+
+---
+
+### Hoeffding Inequality for a binomial
+
+* Since $\mathbf{I}\_{\\{h(X\_{j})\neq Y\_{j}\\}}$ should be 0 or 1, we can consider it as $X\_j$ with $a\_j=0,\,b\_j=1$ for all $j$.
+
+--
+
+* Since $N \hat{L}\_N$ is a summation of $\mathbf{I}\_{\\{h(X\_{j})\neq Y\_{j}\\}}$, it can be considered as $S\_N$.
+
+--
+
+* Then we can write the Hoeffding inequality for this case as
+
+$$
+\mathbf{P}\\{|N\hat{L}\_N - NL| \geq \epsilon N \\} \leq e^{-2(\epsilon N)^2 / \sum\_{i=1}^N (1)^2}
+$$
+
+--
+
+* Therefore, we can get
+
+$$
+\therefore ~ \mathbf{P}\\{|\hat{L}\_N - L| > \epsilon \\} \leq e^{-2 \epsilon^2 N}
+$$
+
+--
+
+* And the variance of the estimate also can bounded.
+
+$$
+\mathbf{E}(\hat{L}\_N - L)^2 = \frac{L(1-L)}{N} \leq \frac{1}{4N}
+$$
+
+---
+
+### Get back to the book
+
+In *Learning from Data*, the notation is as follows:
+
+--
+
+* **In-sample error**
+
+$$
+\begin{aligned}
+E\_\text{in}(h) &= \text{(fraction of $\mathcal{D}$ where $f$ and $h$ disagree)} \\\\
+&= \frac{1}{N} \sum\_{i=1}^N \mathbf{I}\_{[h(\mathbf{x}\_n) \neq f(\mathbf{x}\_n)]}
+\end{aligned}
+$$
+
+--
+
+* **Out-sample error**
+
+$$
+E\_\text{out}(h) = \mathbb{P}[h(\mathbf{x}) \neq f(\mathbf{x})]
+$$
+
+--
+
+From previous discussions, the Hoeffding inequality can be rewritten as
+
+$$
+\mathbb{P}[|E\_\text{in}(h) - E\_\text{out}(h)| > \epsilon] \leq e^{-2 \epsilon^2 N}
+$$
+
+---
+
+### References
+
+* [Learning From Data](http://amlbook.com/), Yaser S. Abu-Mostafa, Malik Magdon-Ismail, and Hsuan-Tien Lin, AMLbook.com (2012)
+
+* [A Probabilistic Theory of Pattern Recognition](https://link.springer.com/book/10.1007/978-1-4612-0711-5), Luc Devroye, László Györfi and Gábor Lugosi, Springer (1996)
+
+* Hoeffding, Wassily (1963). *Probability inequalities for sums of bounded random variables*, Journal of the American Statistical Association. 58 (301): 13–30.
+
+
+    </textarea>
+    <!-- <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script> -->
+    <script src="./remark-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <!-- <script src="./MathJax.js" type="text/javascript"></script> -->
+    <script>
+      var slideshow = remark.create({
+          ratio: '4:3',
+
+          highlightLanguage: 'rust',
+          highlightStyle: 'monokai',
+          highlightLines: 'true',
+          highlightSpans: 'true'
+      });
+
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+      MathJax.Hub.Queue(function() {
+          $(MathJax.Hub.getAllJax()).map(function(index, elem) {
+              return(elem.SourceElement());
+          }).parent().addClass('has-jax');
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>

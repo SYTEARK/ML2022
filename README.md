@@ -27,6 +27,8 @@ Week | Date | Lecturer | Contents | Materials
 
 - [The Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/), T. Hastie, R. Tibshirani and J. Friedman, 12th edition, Springer (2017)
 
+- [A Probabilistic Theory of Pattern Recognition](https://link.springer.com/book/10.1007/978-1-4612-0711-5), Luc Devroye, László Györfi and Gábor Lugosi, Springer (1996)
+
 - [Machine Learning An Algorithmic Perspective](https://www.amazon.com/Machine-Learning-Algorithmic-Perspective-Recognition-ebook/dp/B00OGLE56Y) 
 
 - [Neural Networks and Deep Learning: A Textbook](http://www.charuaggarwal.net/neural.htm), Charu C. Aggarwal, Springer (2018)
