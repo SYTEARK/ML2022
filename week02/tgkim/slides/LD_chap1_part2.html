@@ -44,11 +44,11 @@ class: center, middle
 
 --
 
-* Error measures
+* <s>Error measures</s>
 
 --
 
-* Noisy Targets
+* <s>Noisy Targets</s>
 
 ---
 
@@ -329,11 +329,244 @@ $$
 
 --
 
+&nbsp;
+
 From previous discussions, the Hoeffding inequality can be rewritten as
 
 $$
 \mathbb{P}[|E\_\text{in}(h) - E\_\text{out}(h)| > \epsilon] \leq e^{-2 \epsilon^2 N}
 $$
+
+---
+
+### Hoeffding Inequality for $\mathcal{H}$
+
+Now consider the Hoeffding inequality for an entire hypothesis.
+
+$$
+\mathcal{H} = \left\\{h\_1,\, h\_2,\,\cdots,\,h\_M \right\\}
+$$
+
+.center[
+<div id="boxshadow" style="width:90%;margin:0 auto;">
+  <img src="images/multi_bin.png" alt="multi_bin" style="width:100%">
+  <figcaption style="text-align:center";><b>Fig.2</b> Multiple bins depict the learning problem with $M$ hypotheses</figcaption>
+</div>
+]
+
+---
+
+### Hoeffding Inequality for $\mathcal{H}$
+
+**Very important assumption**:
+
+--
+
+.center[
+  $h$ is fixed *before* you generate the data set.
+]
+
+--
+&nbsp;
+
+If you are allowed to change $h$ after you generate the data set,
+the final hypothesis $g$ is not fixed ahead of time before generating the data.
+
+--
+
+Therefore, we **cannot** just plug in $g$ for $h$ in the Hoeffding inequality.
+
+---
+
+### Hoeffding Inequality for $\mathcal{H}$
+
+.center[
+<div class="animated-border-quote" style="width:100%">
+  <blockquote style="width:90%">
+    <p><b>Exercise 1.10</b> (Homework)</p>
+    <p style="text-align:left">
+      Here is an experiment that illustrates the difference between a single bin and multiple bins.
+      Run a computer simulation for flipping 1,000 fair coins.
+      Flip each coin independently 10 times. Let's focus on 3 coins as follows:
+    </p>
+      <ul>
+        <li>$c_1$ is the first coin flipped;</li>
+        <li>$c_\text{rand}$ is a coin you choose at random;</li>
+        <li>
+          $c_\text{min}$ is the coin that had the minimum frequency of heads
+          (pick the earlier one in case of a tie);
+        </li>
+      </ul>
+    <p style="text-align:left">
+      Let $\nu_1,\,\nu_\text{rand}$ and $\nu_\text{min}$ be the fraction of heads you obtain for the respective three coins.
+      For a coin, let $\mu$ be its probability of heads.
+    </p>
+    <p style="text-align:right">(Continue $\Rightarrow$)</p>
+  </blockquote>
+</div>
+]
+
+---
+
+### Hoeffding Inequality for $\mathcal{H}$
+
+.center[
+<div class="animated-border-quote" style="width:100%">
+  <blockquote style="width:90%">
+    <p><b>Exercise 1.10</b> (Continued)</p>
+    <ol type='a'>
+      <li>What is $\mu$ for the three coins selected?</li>
+      <li>
+        Repeat this entire experiment a large number of times (e.g. 100,000 runs of the entire experiment)
+        to get several instances of $\nu_1, \nu_\text{rand}$ and $\nu_\text{min}$ and plot the histograms of the distributions of
+        $\nu_1, \nu_\text{rand}$ and $\nu_\text{min}$. Notice that which coins end up being $c_\text{rand}$ and $c_\text{min}$ may differ from one run to another.
+      </li>
+      <li>
+        Using b., plot estimates for $\mathbb{P}[|\nu-\mu| > \epsilon]$ as a function of $\epsilon$, together
+        with the Hoeffding bound $2e^{-2\epsilon^2N}$ (on the same graph).
+      </li>
+      <li>
+        Which coins obey the Hoeffding bound, and which ones do not? Explain why.
+      </li>
+      <li>
+        Relate part d. to the multiple bins in Fig.2
+      </li>
+    </ol>
+  </blockquote>
+</div>
+]
+
+---
+
+### Hoeffding Inequality for $\mathcal{H}$
+
+Since $g$ has to be one of the $h\_m$'s regardless of the algorithm and the sample,
+it is always true that:
+
+$$
+\begin{aligned}
+|E\_\text{in}(g) - E\_\text{out}(g)| \,\Longrightarrow\, &\qquad |E\_\text{in}(h\_1) - E\_\text{out}(h\_1)| > \epsilon \\\\
+&\text{or}\quad|E\_\text{in}(h\_2) - E\_\text{out}(h\_2)| > \epsilon \\\\
+&\cdots \\\\
+&\text{or}\quad|E\_\text{in}(h\_M) - E\_\text{out}(h\_M)| > \epsilon
+\end{aligned}
+$$
+
+--
+
+And we know that below inequalities are true:
+
+--
+
+* If $\mathcal{B}\_1 \,\Longrightarrow \mathcal{B}\_2$, then $\mathbb{P}[\mathcal{B}\_1] \leq \mathbb{P}[\mathcal{B}\_2]$
+
+--
+
+* $\mathbb{P}[\mathcal{B}\_1\,\text{or}\,\mathcal{B}\_2\,\text{or}\,\cdots\,\text{or}\,\mathcal{B}\_M] \leq \mathbb{P}[\mathcal{B}\_1] + \mathbb{P}[\mathcal{B}\_2] + \cdots + \mathbb{P}[\mathcal{B}\_M]$
+
+--
+&nbsp;
+
+Therefore, we can get the Hoeffding inequality for $\mathcal{H}$:
+
+$$
+\therefore~\mathbb{P}[|E\_\text{in}(g) - E\_\text{out}(g)| > \epsilon] \leq 2 M e^{-2\epsilon^2 N}
+$$
+
+---
+
+class: center, middle
+
+# Feasibility of the Learning
+
+---
+
+### Feasibility of the Learning
+
+(Many things are omitted - read the book for more details)
+
+--
+
+The feasibility of learning is split into two questions:
+
+.center[
+<div class="animated-border-quote" style="width:100%">
+  <blockquote style="width:90%">
+    <ol>
+      <li>
+        Can we make sure that $E_\text{out}(g)$ is close enough to $E_\text{in}(g)$?
+      </li>
+      <li>
+        Can we make $E_\text{in}(g)$ small enough?
+      </li>
+    </ol>
+  </blockquote>
+</div>
+]
+
+--
+
+The Hoeffding inequality addresses the first question only.
+
+--
+
+&nbsp;
+
+**Q. How can we answer the second question?**
+
+--
+
+**A.** *Complexity* can be an answer.
+
+---
+
+### Complexity
+
+* The complexity of $\mathcal{H}$
+
+--
+
+  * If the number of hypothesis $M$ goes up, we run more risk that $E\_\text{in}(g)$
+  will be a poor estimator of $E\_\text{out}(g)$ according to the Hoeffding inequality.
+
+--
+
+  * $M$ can be thought of as a measure of the *complexity* of the $\mathcal{H}$.
+
+--
+
+  * However, if we want an affirmative answer to the second question, we stand a better chance
+  if $\mathcal{H}$ is more complex, since $g$ has to come from $\mathcal{H}$.
+
+--
+
+  * A more complex $\mathcal{H}$ gives us more flexibility in finding some $g$ that fits the data well,
+  leading to small $E\_\text{in}(g)$.
+
+--
+
+  * This tradeoff in the complexity of $\mathcal{H}$ is a major theme in learning theory that
+  we will study in detail in Chapter 2.
+
+---
+
+### Complexity
+
+* The complexity of $f$
+
+--
+
+  * By the Hoeffding inequality, the complexity of $f$ does not affect how well $E\_\text{in}(g)$
+  approximates $E\_\text{out}(g)$.
+
+--
+
+  * But if the target function is complex, the data from a complex $f$ are harder to fit than the data from a simple $f$.
+
+--
+
+  * We might try to get around that by making our hypothesis set more complex so that we can fit the data better
+  and a get lower $E\_\text{in}(g)$, but then $E\_\text{out}$ won't be as close to $E\_\text{in}$ per the Hoeffding inequality.
 
 ---
 
@@ -345,6 +578,11 @@ $$
 
 * Hoeffding, Wassily (1963). *Probability inequalities for sums of bounded random variables*, Journal of the American Statistical Association. 58 (301): 13–30.
 
+---
+
+class: center, middle
+
+# Thank you!
 
     </textarea>
     <!-- <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script> -->
