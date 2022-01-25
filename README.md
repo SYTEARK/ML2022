@@ -9,7 +9,11 @@
 Week | Date | Lecturer | Contents | Materials
 :--: | :--: | :--: | :--: | :--:
 01 | 2022-01-09 | [Yeji Park](https://github.com/hiilynn) | The Notion applied to ML | [Slides](./week01/yjpark/the_notion_applied_to_ml.html)
-01 | 2022-01-09 | [Tae-Geun Kim](https://github.com/Axect) | Chapter 1 of LFD | [Slides](https://drive.google.com/file/d/1kGPT4IUPL_5EohccQzmofZOd1sotIJSU/view?usp=sharing)
+01 | 2022-01-09 | [Tae-Geun Kim](https://github.com/Axect) | Chapter 1 of LFD (Part 1) | [Slides](https://axect.github.io/Slides/ML/LFD/chap1/LD_chap1_part1.html#1)
+02 | 2022-01-16 | [Sujin Lee]() | Chapter 2 of D2L |  
+03 | 2022-01-24 | [Sujin Lee]() | Chapter 3 of D2L |
+03 | 2022-01-24 | [Tae-Geun Kim](https://github.com/Axect) | Chapter 1 of LFD (Part 2) | [Slides](https://axect.github.io/Slides/ML/LFD/chap1/LD_chap1_part2.html#1)
+03 | 2022-01-24 | [Sangho Ahn](https://github.com/ahnho) | Review transfer learning | 
 
 
 -----
@@ -29,7 +33,7 @@ Week | Date | Lecturer | Contents | Materials
 
 - [A Probabilistic Theory of Pattern Recognition](https://link.springer.com/book/10.1007/978-1-4612-0711-5), Luc Devroye, László Györfi and Gábor Lugosi, Springer (1996)
 
-- [Machine Learning An Algorithmic Perspective](https://www.amazon.com/Machine-Learning-Algorithmic-Perspective-Recognition-ebook/dp/B00OGLE56Y) 
+- [Machine Learning An Algorithmic Perspective](https://www.amazon.com/Machine-Learning-Algorithmic-Perspective-Recognition-ebook/dp/B00OGLE56Y), Stephen Marsland, CRC Press (2015)
 
 - [Neural Networks and Deep Learning: A Textbook](http://www.charuaggarwal.net/neural.htm), Charu C. Aggarwal, Springer (2018)
 
