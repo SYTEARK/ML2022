@@ -14,6 +14,9 @@ Week | Date | Lecturer | Contents | Materials
 03 | 2022-01-24 | [Sujin Lee]() | Chapter 3 of D2L |
 03 | 2022-01-24 | [Tae-Geun Kim](https://github.com/Axect) | Chapter 1 of LFD (Part 2) | [Slides](https://axect.github.io/Slides/ML/LFD/chap1/LD_chap1_part2.html#1)
 03 | 2022-01-24 | [Sangho Ahn](https://github.com/ahnho) | Review transfer learning | 
+04 | 2022-02-06 | | |
+05 | 2022-02-14 | | |
+06 | 2022-02-19 | | |
 
 
 -----
