@@ -2,3 +2,10 @@
 target/
 bin/
 true/
+*/**/target/
+*/**/bin/
+*/**/true/
+*.zip
+*.tar.gz
+*/**/wandb
+!.gitignore
