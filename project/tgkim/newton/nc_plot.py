@@ -124,7 +124,7 @@ plt.grid()
 plt.savefig("fig/sho_position.png", dpi=300)
 
 # ==============================================================================
-# Free Fall - Velocity
+# SHO - Velocity
 # ==============================================================================
 # Prepare Plot
 plt.figure(figsize=(10,6), dpi=300)
@@ -169,7 +169,7 @@ plt.grid()
 plt.savefig("fig/shofriction_position.png", dpi=300)
 
 # ==============================================================================
-# Free Fall - Velocity
+# SHO with Friction - Velocity
 # ==============================================================================
 # Prepare Plot
 plt.figure(figsize=(10,6), dpi=300)
@@ -184,3 +184,48 @@ plt.plot(t, v, label=r'Velocity')
 plt.legend(fontsize=12)
 plt.grid()
 plt.savefig("fig/shofriction_velocity.png", dpi=300)
+
+# ==============================================================================
+# SHO with Friction (GL4)
+# ==============================================================================
+# Import netCDF file
+ncfile = './data/sho_friction_gl4.nc'
+data = Dataset(ncfile)
+var = data.variables
+
+# Prepare Data to Plot
+t = var['t'][:]
+s = var['s'][:]  
+v = var['v'][:]
+
+# Prepare Plot
+plt.figure(figsize=(10,6), dpi=300)
+plt.title(r"Simple Harmonic Oscillator with Friction", fontsize=16)
+plt.xlabel(r'$t$', fontsize=14)
+plt.ylabel(r'$s$', fontsize=14)
+
+
+# Plot with Legends
+plt.plot(t, s, label=r'Position')
+
+# Other options
+plt.legend(fontsize=12)
+plt.grid()
+plt.savefig("fig/shofriction_gl4_position.png", dpi=300)
+
+# ==============================================================================
+# SHO with Friction - Velocity (GL4)
+# ==============================================================================
+# Prepare Plot
+plt.figure(figsize=(10,6), dpi=300)
+plt.title(r"Simple Harmonic Oscillator with Friction", fontsize=16)
+plt.xlabel(r'$t$', fontsize=14)
+plt.ylabel(r'$v$', fontsize=14)
+
+# Plot with Legends
+plt.plot(t, v, label=r'Velocity')
+
+# Other options
+plt.legend(fontsize=12)
+plt.grid()
+plt.savefig("fig/shofriction_gl4_velocity.png", dpi=300)

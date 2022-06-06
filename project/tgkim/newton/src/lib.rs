@@ -30,7 +30,7 @@ pub fn sho() -> Potential<AD> {
 pub fn sho_friction() -> Potential<AD> {
     Potential::new(
         vec![10f64, 0.3],
-        |x: AD, p, st| 0.5 * p[0] * x.powi(2) + p[1] * 10f64 * st[1].signum() * x
+        |x: AD, p, st| 0.5 * p[0] * x.powi(2) + p[1] * 10f64 * st[1].x().signum() * x
     )
 }
 
@@ -50,14 +50,28 @@ pub fn eom(st: &mut State<f64>, p: &Potential<AD>) {
     dxv[1] = -dvdx;     // dv/dt = a = F/m = -1/m * dV/dx
 }
 
+pub fn eom_ad(st: &mut State<AD>, p: &Potential<AD>) {
+    let xv = &st.value;
+    let dxv = &mut st.deriv;
+
+    let x_curr = AD1(xv[0].x(), 1f64);
+    let v_curr = AD1(xv[1].x(), 0f64);
+
+    let dvdx = p.call_ad(x_curr, xv);
+    let dvdx = AD1(dvdx.dx(), 0f64);
+
+    dxv[0] = v_curr;    // dx/dt = v
+    dxv[1] = -dvdx;     // dv/dt = a = F/m = -1/m * dV/dx
+}
+
 pub struct Potential<T> where T: Real {
     pub params: Vec<f64>,
-    f: Box<dyn Fn(T, &Vec<f64>, &Vec<f64>) -> T>,
+    f: Box<dyn Fn(T, &Vec<f64>, &Vec<AD>) -> T>,
     _t: PhantomData<T>
 }
 
 impl<T: Real> Potential<T> {
-    pub fn new<F: Fn(T, &Vec<f64>, &Vec<f64>) -> T + 'static>(params: Vec<f64>, f: F) -> Self {
+    pub fn new<F: Fn(T, &Vec<f64>, &Vec<AD>) -> T + 'static>(params: Vec<f64>, f: F) -> Self {
         Potential {
             params,
             f: Box::new(f),
@@ -66,6 +80,10 @@ impl<T: Real> Potential<T> {
     }
 
     pub fn call(&self, x: T, st_value: &Vec<f64>) -> T {
+        (self.f)(x, &self.params, &st_value.to_ad_vec())
+    }
+
+    pub fn call_ad(&self, x: T, st_value: &Vec<AD>) -> T {
         (self.f)(x, &self.params, st_value)
     }
 }
