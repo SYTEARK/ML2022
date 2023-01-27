@@ -9,3 +9,4 @@ true/
 *.tar.gz
 */**/wandb
 !.gitignore
+*.npz
